@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>FieldForce Agro Services | Delivering Solutions to Your Farm</title>
+    <style>
+        /* Adjusted for the slimmer navigation */
+        html { 
+            scroll-behavior: smooth; 
+            scroll-padding-top: 90px; 
+        }
+        .slider-container { display: flex; transition: transform 0.7s ease-in-out; }
+        
+        .slide { 
+            min-width: 100%; 
+            height: 85vh; 
+            background-size: cover; 
+            background-position: center 25%;
+            filter: brightness(1.1);
+        }
+
+        .service-card-img {
+            filter: brightness(1.1);
+        }
+    </style>
+</head>
+<body class="bg-[#1a1a1a] text-white font-sans selection:bg-[#2BF6B5] selection:text-black">
+
+    <nav class="px-6 py-2 flex justify-between items-center border-b border-gray-700 bg-[#1a1a1a] sticky top-0 z-50">
+        <div class="flex items-center">
+            <img src="FieldForce Logo - Final.png" 
+                 alt="FieldForce Logo" 
+                 class="h-32 w-auto object-contain" 
+                 style="mix-blend-mode: screen;"
+                 onerror="this.style.display='none'">
+        </div>
+        <div class="space-x-8 hidden md:flex text-[10px] uppercase tracking-[0.3em]">
+            <a href="#about" class="hover:text-[#2BF6B5] transition-colors">About</a>
+            <a href="#services" class="hover:text-[#2BF6B5] transition-colors">Services</a>
+            <a href="#mission" class="hover:text-[#2BF6B5] transition-colors">Mission</a>
+            <a href="#team" class="hover:text-[#2BF6B5] transition-colors">Team</a>
+            <a href="#contact" class="hover:text-[#2BF6B5] transition-colors">Contact</a>
+        </div>
+    </nav>
+
+    <header class="relative flex flex-col items-center justify-center overflow-hidden">
+        <div class="relative z-10 text-center px-4 py-4 bg-[#1a1a1a] w-full border-b border-gray-800">
+            <h1 class="text-5xl md:text-7xl font-black mb-2 tracking-tighter uppercase">
+                FIELD<span class="text-[#2BF6B5]">FORCE</span>
+            </h1>
+            <p class="text-[10px] md:text-xs text-gray-400 max-w-2xl mx-auto font-bold tracking-[0.4em] uppercase">
+                Delivering Solutions to Your Farm
+            </p>
+        </div>
+
+        <div class="relative w-full overflow-hidden shadow-2xl">
+            <div class="slider-container" id="slider">
+                <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('expert-consultation.jpg?v=1');">
+                    <div class="w-full h-full flex items-end p-12"><p class="text-xs tracking-widest uppercase bg-[#2BF6B5] text-black px-6 py-3 font-bold">Expert Consultation</p></div>
+                </div>
+                <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('black-farmer.jpg?v=1');">
+                    <div class="w-full h-full flex items-end p-12"><p class="text-xs tracking-widest uppercase bg-[#2BF6B5] text-black px-6 py-3 font-bold">Empowering Farmers</p></div>
+                </div>
+                <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('premium-brands.jpg?v=1');">
+                    <div class="w-full h-full flex items-end p-12"><p class="text-xs tracking-widest uppercase bg-[#2BF6B5] text-black px-6 py-3 font-bold">Premium Brands Support</p></div>
+                </div>
+                <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('tailored-support.jpg?v=1');">
+                    <div class="w-full h-full flex items-end p-12"><p class="text-xs tracking-widest uppercase bg-[#2BF6B5] text-black px-6 py-3 font-bold">Tailored Support</p></div>
+                </div>
+                <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('sustainable-solutions.jpg?v=1');">
+                    <div class="w-full h-full flex items-end p-12"><p class="text-xs tracking-widest uppercase bg-[#2BF6B5] text-black px-6 py-3 font-bold">Sustainable Solutions</p></div>
+                </div>
+                <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('agro-chemicals.jpg?v=1');">
+                    <div class="w-full h-full flex items-end p-12"><p class="text-xs tracking-widest uppercase bg-[#2BF6B5] text-black px-6 py-3 font-bold">Field Specialists</p></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="about" class="py-24 px-6 max-w-5xl mx-auto text-center">
+        <h2 class="text-xs font-bold text-[#2BF6B5] uppercase tracking-[0.5em] mb-8">About Us</h2>
+        <p class="text-lg md:text-xl text-gray-300 leading-relaxed font-light">
+            FieldForce Agro Services is a leading agrochemical company that takes a proactive approach to serving farmers. We understand the importance of timely and effective solutions in agriculture, which is why we bring our expertise and products directly to our customers.
+        </p>
+    </section>
+
+    <section id="services" class="py-24 px-6 bg-[#262626] border-y border-gray-800">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-xs font-bold text-[#2BF6B5] uppercase tracking-[0.5em] mb-16 text-center">Our Services</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <div class="bg-[#1a1a1a] border border-gray-700 overflow-hidden group">
+                    <img src="agro-supply.jpg?v=1" class="service-card-img w-full h-56 object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="Supply">
+                    <div class="p-8">
+                        <h3 class="text-[#2BF6B5] text-sm font-bold mb-4 uppercase tracking-widest">Agrochemicals Supply & Application</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">Direct supply of premium chemicals with professional guidance on safe and effective application techniques.</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#1a1a1a] border border-gray-700 overflow-hidden group">
+                    <img src="crop-protection.jpg?v=1" class="service-card-img w-full h-56 object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="Protection">
+                    <div class="p-8">
+                        <h3 class="text-[#2BF6B5] text-sm font-bold mb-4 uppercase tracking-widest">Crop Protection & Management</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">Proactive management strategies to safeguard your crops throughout the entire growing cycle.</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#1a1a1a] border border-gray-700 overflow-hidden group">
+                    <img src="soil-testing.jpg?v=1" class="service-card-img w-full h-56 object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="Soil">
+                    <div class="p-8">
+                        <h3 class="text-[#2BF6B5] text-sm font-bold mb-4 uppercase tracking-widest">Soil Testing & Analysis</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">Comprehensive testing to understand soil health and nutrient requirements for optimal production.</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#1a1a1a] border border-gray-700 overflow-hidden group">
+                    <img src="fertilizer.jpg?v=1" class="service-card-img w-full h-56 object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="Fertilizer">
+                    <div class="p-8">
+                        <h3 class="text-[#2BF6B5] text-sm font-bold mb-4 uppercase tracking-widest">Fertilizer Recommendations</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">Scientific data-driven advice on fertilizer types to ensure maximum growth efficiency.</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#1a1a1a] border border-gray-700 overflow-hidden group">
+                    <img src="pest-management.jpg?v=1" class="service-card-img w-full h-56 object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="Pests">
+                    <div class="p-8">
+                        <h3 class="text-[#2BF6B5] text-sm font-bold mb-4 uppercase tracking-widest">Pest & Disease Management</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">Expert identification and treatment plans to combat local pests and diseases effectively.</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#1a1a1a] border border-gray-700 overflow-hidden group">
+                    <img src="animal-health.jpg?v=1" class="service-card-img w-full h-56 object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="Animal Health">
+                    <div class="p-8">
+                        <h3 class="text-[#2BF6B5] text-sm font-bold mb-4 uppercase tracking-widest">Animal Health Solutions</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">Specialized solutions for livestock well-being, including health management advisory.</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#1a1a1a] border border-gray-700 overflow-hidden group lg:col-span-3 lg:max-w-md lg:mx-auto">
+                    <img src="advisory.jpg?v=1" class="service-card-img w-full h-56 object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="Advisory">
+                    <div class="p-8 text-center">
+                        <h3 class="text-[#2BF6B5] text-sm font-bold mb-4 uppercase tracking-widest">Advisory Services</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">Personalized support focused on achieving optimal crop yields and farm productivity.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="mission" class="py-24 px-6 bg-[#1a1a1a]">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-[#2BF6B5] text-4xl md:text-5xl font-black uppercase tracking-tighter mb-12">Our Mission</h2>
+            <p class="text-xl md:text-2xl font-light text-gray-300 leading-relaxed italic mb-16">
+                "To empower farmers with innovative agrochemical solutions, expert knowledge, and personalized support, enabling them to achieve their full potential and contribute to a sustainable food future."
+            </p>
+            <h2 class="text-xs font-bold text-[#2BF6B5] uppercase tracking-[0.5em] mb-6">Our Vision</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto leading-relaxed mb-12">
+                To be the preferred partner for farmers, providing tailored agrochemical solutions that enhance crop yields, improve farm productivity, and promote sustainable agriculture practices.
+            </p>
+        </div>
+    </section>
+
+    <section id="team" class="py-24 px-6 bg-[#262626] border-t border-gray-800">
+        <div class="max-w-5xl mx-auto text-center">
+            <h2 class="text-xs font-bold text-[#2BF6B5] uppercase tracking-[0.5em] mb-8">Our Team</h2>
+            <p class="text-gray-300 leading-relaxed mb-6">
+                Our team of seasoned agronomists, animal health specialists, and technical specialists is dedicated to providing top-notch agrochemicals and advisory services.
+            </p>
+            <p class="text-gray-400 text-sm italic">
+                Join the FieldForce family today.
+            </p>
+        </div>
+    </section>
+
+    <footer id="contact" class="bg-[#111111] pt-20 pb-8 px-6 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16 mb-16">
+            
+            <div>
+                <div class="text-2xl font-black tracking-tighter text-[#2BF6B5] uppercase mb-6">FieldForce</div>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    Delivering premium agrochemical solutions and expert advisory to maximize your farm's success.
+                </p>
+            </div>
+
+            <div class="md:pl-12">
+                <h4 class="text-white font-bold uppercase tracking-widest text-xs mb-8">Navigation</h4>
+                <ul class="space-y-4 text-gray-500 text-sm">
+                    <li><a href="#about" class="hover:text-[#2BF6B5] transition-colors">About Us</a></li>
+                    <li><a href="#services" class="hover:text-[#2BF6B5] transition-colors">Our Services</a></li>
+                    <li><a href="#mission" class="hover:text-[#2BF6B5] transition-colors">Mission & Vision</a></li>
+                    <li><a href="#team" class="hover:text-[#2BF6B5] transition-colors">Our Team</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-widest text-xs mb-8">Contact Information</h4>
+                <ul class="space-y-6 text-gray-400 text-sm">
+                    <li class="flex items-start">
+                        <span class="text-[#2BF6B5] mr-4">📍</span>
+                        <span>6 Clarke Close, Belvedere, Harare, Zimbabwe</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-[#2BF6B5] mr-4">📞</span>
+                        <span class="leading-relaxed">+263 718 814 555 / +263 773 814 555</span>
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-[#2BF6B5] mr-4">✉️</span>
+                        <a href="mailto:fieldforceagroservices@gmail.com" class="hover:text-white transition-colors">fieldforceagroservices@gmail.com</a>
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-[#2BF6B5] mr-4">🌐</span>
+                        <a href="https://facebook.com" target="_blank" class="hover:text-white transition-colors">Facebook Profile</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto border-t border-gray-800 pt-8 text-center text-[10px] text-gray-600 uppercase tracking-[0.4em]">
+            &copy; 2026 FieldForce Agro Services.
+        </div>
+    </footer>
+
+    <script>
+        const slider = document.getElementById('slider');
+        const slides = slider.children;
+        const totalSlides = slides.length;
+        const firstClone = slides[0].cloneNode(true);
+        slider.appendChild(firstClone);
+        let index = 0;
+        setInterval(() => {
+            index++;
+            slider.style.transition = "transform 0.7s ease-in-out";
+            slider.style.transform = `translateX(-${index * 100}%)`;
+            if (index === totalSlides) {
+                setTimeout(() => {
+                    slider.style.transition = "none";
+                    index = 0;
+                    slider.style.transform = `translateX(0)`;
+                }, 700); 
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
