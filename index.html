@@ -1,0 +1,643 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>FieldForce Agro Services | Delivering Solutions to Your Farm</title>
+    <style>
+        html { scroll-behavior: smooth; scroll-padding-top: 0px; }
+        .root {}
+        .slider-container { display: flex; transition: transform 0.7s ease-in-out; height: 100%; }
+        .slide { min-width: 100%; height: 100%; background-size: cover; background-position: center 20%; background-repeat: no-repeat; filter: brightness(1.05); }
+        .service-card-img { filter: brightness(1.1); }
+
+        /* ── Service card active state ── */
+        .service-card { cursor: pointer; transition: border-color 0.25s, box-shadow 0.25s; }
+        .service-card:hover { border-color: #2BF6B5 !important; }
+        .service-card.active { border-color: #2BF6B5 !important; box-shadow: 0 0 0 2px #2BF6B5; }
+        .service-card.active .service-card-img { opacity: 1 !important; }
+
+        /* ── Full-screen overlay panel ── */
+        .panel-overlay { display: none; position: fixed; inset: 0; z-index: 200; background: #ffffff; overflow-y: auto; }
+        .panel-overlay.open { display: block; }
+        .panel-header { position: sticky; top: 0; z-index: 10; background: #ffffff; border-bottom: 2px solid #1b3a2d; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; }
+        .panel-close-btn { background: none; border: 1px solid #ccc; color: #1b3a2d; font-size: 22px; line-height: 1; cursor: pointer; padding: 4px 12px; border-radius: 4px; transition: all 0.2s; }
+        .panel-close-btn:hover { border-color: #2BF6B5; color: #2BF6B5; background: #1b3a2d; }
+
+        /* ── Inner tab bar ── */
+        .inner-tabs { display: flex; gap: 6px; padding: 0 32px; margin-top: 28px; border-bottom: 2px solid #1b3a2d; }
+        .inner-tab-btn { padding: 10px 26px; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 700; border-radius: 4px 4px 0 0; border: 1px solid #444; border-bottom: none; background: #1b3a2d; color: #a0c080; cursor: pointer; transition: all 0.2s; }
+        .inner-tab-btn:hover { color: #2BF6B5; border-color: #2BF6B5; background: #0d2018; }
+        .inner-tab-btn.active { background: #ca8a04; color: #fff; border-color: #ca8a04; }
+        .inner-tab-content { display: none; padding: 32px; max-width: 1200px; margin: 0 auto; animation: fadeSlide 0.3s ease; }
+        .inner-tab-content.active { display: block; }
+        @keyframes fadeSlide { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ── Accordions ── */
+        .ff-accordion { margin-bottom: 12px; border: 1px solid #2d5040; border-radius: 6px; overflow: hidden; }
+        .ff-accordion summary { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; cursor: pointer; padding: 16px 22px; background: #1b3a2d; color: #c8e0a0; display: flex; justify-content: space-between; align-items: center; list-style: none; transition: background 0.2s, color 0.2s; }
+        .ff-accordion summary::-webkit-details-marker { display: none; }
+        .ff-accordion summary:hover { background: #0d2018; color: #2BF6B5; }
+        .ff-accordion[open] summary { background: #0d2018; color: #2BF6B5; }
+        .ff-accordion summary::after { content: '+'; font-size: 20px; font-weight: 300; color: #2BF6B5; }
+        .ff-accordion[open] summary::after { content: '−'; }
+        .ff-accordion-content { padding: 22px; border-top: 1px solid #2d5040; background: #ffffff; }
+
+        /* ── Tables ── */
+        .ff-table { width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 13px; }
+        .ff-table th, .ff-table td { border: 1px solid #3a3a3a; padding: 10px 14px; text-align: left; vertical-align: top; }
+        .ff-table th { background: #1b3a2d; color: #2BF6B5; font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: 0.08em; }
+        .ff-table td { color: #111; }
+        .ff-table tr:nth-child(even) td { background: #f2f8f4; }
+        .ff-table tr:hover td { background: #1b3a2d; color: #fff; }
+
+        /* ── Guide text ── */
+        .ff-section-title { color: #ca8a04; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 700; margin: 22px 0 10px; border-bottom: 1px solid #ca8a04; padding-bottom: 6px; display: inline-block; }
+        .ff-section-title:first-child { margin-top: 0; }
+        .ff-guide-text { margin-bottom: 18px; }
+        .ff-guide-text ul { padding-left: 18px; }
+        .ff-guide-text li { margin-bottom: 6px; color: #111; font-size: 13px; line-height: 1.7; }
+        .ff-note { color: #333; font-size: 12px; font-style: italic; margin-top: 6px; }
+        .ff-note-green { display: block; color: #ca8a04; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 10px; }
+
+        /* ── Soil parameter table ── */
+        .soil-table { width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 13px; }
+        .soil-table th, .soil-table td { border: 1px solid #3a3a3a; padding: 12px 16px; text-align: left; vertical-align: top; }
+        .soil-table th { background: #1b3a2d; color: #2BF6B5; font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: 0.08em; }
+        .soil-table td { color: #111; line-height: 1.6; }
+        .soil-table td:first-child { color: #1b3a2d; font-weight: 600; font-size: 12px; white-space: nowrap; }
+        .soil-table tr:nth-child(even) td { background: #f2f8f4; }
+        .soil-table tr:hover td { background: #1b3a2d; color: #fff; }
+        .soil-table tr:hover td:first-child { color: #1b3a2d; }
+
+        /* ── WhatsApp floating button ── */
+        .wa-float { position: fixed; bottom: 28px; right: 28px; z-index: 9999; display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; }
+        .wa-bubble { background: #25D366; border-radius: 50px; display: flex; align-items: center; gap: 10px; padding: 12px 20px 12px 14px; box-shadow: 0 4px 20px rgba(37,211,102,0.5); position: relative; }
+        .wa-bubble svg { width: 26px; height: 26px; fill: #fff; flex-shrink: 0; }
+        .wa-label { color: #fff; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+        /* pulse ring */
+        .wa-bubble::before { content:''; position:absolute; inset:-6px; border-radius:50px; border:3px solid #25D366; animation: wa-pulse 2s ease-out infinite; opacity:0; }
+        .wa-bubble::after  { content:''; position:absolute; inset:-14px; border-radius:50px; border:2px solid #25D366; animation: wa-pulse 2s ease-out 0.5s infinite; opacity:0; }
+        @keyframes wa-pulse { 0%{transform:scale(0.95);opacity:0.7} 70%{transform:scale(1.12);opacity:0} 100%{transform:scale(1.12);opacity:0} }
+        /* gentle float bob */
+        .wa-float { animation: wa-bob 3s ease-in-out infinite; }
+        @keyframes wa-bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+    </style>
+    <!-- Edit FieldForce_Data.js to update products & crop guides -->
+    <script src="FieldForce_Data.js"></script>
+</head>
+<body class="bg-white text-[#1a1a1a] font-sans selection:bg-[#ca8a04] selection:text-black">
+
+    <nav id="main-nav" class="px-6 py-0 flex justify-between items-center fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:transparent;">
+        <div class="flex items-center">
+            <img src="FieldForce Logo - Final.png" alt="FieldForce Logo" class="h-32 w-auto object-contain" style="mix-blend-mode:screen;" onerror="this.style.display='none'">
+        </div>
+        <div class="space-x-6 hidden md:flex text-[10px] uppercase tracking-[0.25em] text-white font-bold" style="text-shadow:0 1px 4px rgba(0,0,0,0.6);">
+            <a href="#about"             class="hover:text-[#2BF6B5] transition-colors">About</a>
+            <a href="#services"          class="hover:text-[#2BF6B5] transition-colors">Services</a>
+            <a href="#tailored-support"  class="hover:text-[#2BF6B5] transition-colors">Tailored Support</a>
+            <a href="#empowering-farmers"class="hover:text-[#2BF6B5] transition-colors">Empowering Farmers</a>
+            <span class="cursor-pointer hover:text-[#2BF6B5] transition-colors" onclick="openNav('Products','Products List')">Products</span>
+            <span class="cursor-pointer hover:text-[#2BF6B5] transition-colors" onclick="openNav('CropGuide','Crop Guide')">Crop Guide</span>
+            <a href="#contact"           class="hover:text-[#2BF6B5] transition-colors">Contact</a>
+        </div>
+    </nav>
+
+    <header class="relative overflow-hidden" style="height:100vh; min-height:600px;">
+        <!-- Full-bleed slider (behind everything) -->
+        <div class="absolute inset-0 w-full h-full overflow-hidden">
+            <div class="slider-container h-full" id="slider">
+                <div class="slide" style="background-image:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2)),url('expert-consultation.jpg?v=1');"><div class="w-full h-full flex items-end p-12"><p class="text-xs tracking-widest uppercase bg-[#ca8a04] text-white px-6 py-3 font-bold">Expert Consultation</p></div></div>
+                <div class="slide" style="background-image:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2)),url('black-farmer.jpg?v=1');"><div class="w-full h-full flex items-end p-12"><p class="text-xs tracking-widest uppercase bg-[#ca8a04] text-white px-6 py-3 font-bold">Empowering Farmers</p></div></div>
+                <div class="slide" style="background-image:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2)),url('premium-brands.jpg?v=1');"><div class="w-full h-full flex items-end p-12"><p class="text-xs tracking-widest uppercase bg-[#ca8a04] text-white px-6 py-3 font-bold">Premium Brands Support</p></div></div>
+                <div class="slide" style="background-image:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2)),url('tailored-support.jpg?v=1');"><div class="w-full h-full flex items-end p-12"><p class="text-xs tracking-widest uppercase bg-[#ca8a04] text-white px-6 py-3 font-bold">Tailored Support</p></div></div>
+                <div class="slide" style="background-image:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2)),url('sustainable-solutions.jpg?v=1');"><div class="w-full h-full flex items-end p-12"><p class="text-xs tracking-widest uppercase bg-[#ca8a04] text-white px-6 py-3 font-bold">Sustainable Solutions</p></div></div>
+                <div class="slide" style="background-image:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2)),url('agro-chemicals.jpg?v=1');"><div class="w-full h-full flex items-end p-12"><p class="text-xs tracking-widest uppercase bg-[#ca8a04] text-white px-6 py-3 font-bold">Field Specialists</p></div></div>
+            </div>
+        </div>
+        <!-- Gradient overlay for readability -->
+        <div class="absolute inset-0 z-10 pointer-events-none" style="background:linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.55) 100%);"></div>
+        <!-- Title overlay -->
+        <div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4 pointer-events-none">
+            <h1 class="text-5xl md:text-7xl font-black mb-3 tracking-tighter uppercase text-white drop-shadow-lg">FIELD<span class="text-[#2BF6B5]">FORCE</span></h1>
+            <p class="text-[10px] md:text-xs text-gray-200 max-w-2xl mx-auto font-bold tracking-[0.4em] uppercase drop-shadow">Delivering Solutions to Your Farm</p>
+        </div>
+    </header>
+
+    <section id="about" class="py-24 px-6 max-w-5xl mx-auto text-center">
+        <h2 class="text-xs font-bold uppercase tracking-[0.5em] mb-8" style="color:#1b3a2d;">About Us</h2>
+        <p class="text-lg md:text-xl text-gray-700 leading-relaxed font-light mb-16">FieldForce Agro Services is a leading agrochemical company that takes a proactive approach to serving farmers. We understand the importance of timely and effective solutions in agriculture, which is why we bring our expertise and products directly to our customers.</p>
+        <div class="border-t pt-16" style="border-color:#c8e0c0;">
+            <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-10" style="color:#1b3a2d;">Our Mission</h2>
+            <p class="text-xl md:text-2xl font-light text-gray-700 leading-relaxed italic mb-16 max-w-3xl mx-auto">"To empower farmers with innovative agrochemical solutions, expert knowledge, and personalized support, enabling them to achieve their full potential and contribute to a sustainable food future."</p>
+            <h3 class="text-xs font-bold uppercase tracking-[0.5em] mb-6" style="color:#1b3a2d;">Our Vision</h3>
+            <p class="text-gray-600 max-w-2xl mx-auto leading-relaxed">To be the preferred partner for farmers, providing tailored agrochemical solutions that enhance crop yields, improve farm productivity, and promote sustainable agriculture practices.</p>
+        </div>
+    </section>
+
+    <section id="services" class="py-24 px-6 bg-[#f0f7f0] border-y border-[#c8e0c0]">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tight mb-3 text-center" style="color:#1b3a2d;">Our Services</h2>
+            <p class="text-center text-gray-500 text-[10px] tracking-widest uppercase mb-16">Click a service to explore</p>
+            <div class="flex flex-wrap justify-center gap-8">
+
+                <div class="service-card bg-[#1b3a2d] border border-[#2d5040] overflow-hidden group w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.34rem)]" onclick="openService(this,'agrochemicals')">
+                    <img src="agro-supply.jpg?v=1" class="service-card-img w-full h-56 object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="Supply">
+                    <div class="p-8">
+                        <h3 class="text-[#2BF6B5] text-sm font-bold mb-4 uppercase tracking-widest">Agrochemicals Supply &amp; Application</h3>
+                        <p class="text-xs leading-relaxed text-white">Direct supply of premium chemicals with professional guidance on safe and effective application techniques.</p>
+                        <p class="text-[10px] uppercase tracking-widest mt-4 font-bold text-white">→ View Chemical Products</p>
+                    </div>
+                </div>
+
+                <div class="service-card bg-[#1b3a2d] border border-[#2d5040] overflow-hidden group w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.34rem)]" onclick="openService(this,'crop-protection')">
+                    <img src="crop-protection.jpg?v=1" class="service-card-img w-full h-56 object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="Protection">
+                    <div class="p-8">
+                        <h3 class="text-[#2BF6B5] text-sm font-bold mb-4 uppercase tracking-widest">Crop Protection &amp; Management</h3>
+                        <p class="text-xs leading-relaxed text-white">Proactive management strategies to safeguard your crops throughout the entire growing cycle.</p>
+                        <p class="text-[10px] uppercase tracking-widest mt-4 font-bold text-white">→ View Crop Protection Info</p>
+                    </div>
+                </div>
+
+                <div class="service-card bg-[#1b3a2d] border border-[#2d5040] overflow-hidden group w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.34rem)]" onclick="openService(this,'soil')">
+                    <img src="soil-testing.jpg?v=1" class="service-card-img w-full h-56 object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="Soil">
+                    <div class="p-8">
+                        <h3 class="text-[#2BF6B5] text-sm font-bold mb-4 uppercase tracking-widest">Soil Testing &amp; Analysis</h3>
+                        <p class="text-xs leading-relaxed text-white">Comprehensive testing to understand soil health and nutrient requirements for optimal production.</p>
+                        <p class="text-[10px] uppercase tracking-widest mt-4 font-bold text-white">→ View Soil Parameters</p>
+                    </div>
+                </div>
+
+                <div class="service-card bg-[#1b3a2d] border border-[#2d5040] overflow-hidden group w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.34rem)]" onclick="openService(this,'fertilizer')">
+                    <img src="fertilizer.jpg?v=1" class="service-card-img w-full h-56 object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="Fertilizer">
+                    <div class="p-8">
+                        <h3 class="text-[#2BF6B5] text-sm font-bold mb-4 uppercase tracking-widest">Fertilizer Recommendations</h3>
+                        <p class="text-xs leading-relaxed text-white">Scientific data-driven advice on fertilizer types to ensure maximum growth efficiency.</p>
+                        <p class="text-[10px] uppercase tracking-widest mt-4 font-bold text-white">→ View Fertilizer List</p>
+                    </div>
+                </div>
+
+                <div class="service-card bg-[#1b3a2d] border border-[#2d5040] overflow-hidden group w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.34rem)]" onclick="openService(this,'advisory')">
+                    <img src="advisory.jpg?v=1" class="service-card-img w-full h-56 object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt="Advisory">
+                    <div class="p-8 text-center">
+                        <h3 class="text-[#2BF6B5] text-sm font-bold mb-4 uppercase tracking-widest">Advisory Services</h3>
+                        <p class="text-xs leading-relaxed text-white">Personalized support focused on achieving optimal crop yields and farm productivity.</p>
+                        <p class="text-[10px] uppercase tracking-widest mt-4 font-bold text-white">→ Request Advisory Services</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ TAILORED SUPPORT ═══ -->
+    <section id="tailored-support" class="bg-white border-b border-[#ca8a04]" style="overflow:hidden;">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2" style="height:680px;">
+
+            <!-- LEFT: Image mosaic — 1 large top, 2 equal below -->
+            <div class="grid grid-rows-2 gap-2 p-2" style="background:#ca8a04; height:680px;">
+                <!-- Large image top -->
+                <img src="tailored-1.jpg" class="w-full h-full object-cover" alt="Tailored Support" style="min-height:0; object-position:center bottom;">
+                <!-- Two images side by side bottom row -->
+                <div class="grid grid-cols-2 gap-2" style="min-height:0;">
+                    <img src="tailored-2.jpg" class="w-full h-full object-cover" alt="Tailored Support" style="min-height:0; object-position:center bottom;">
+                    <img src="tailored-3.jpg" class="w-full h-full object-cover" alt="Tailored Support" style="min-height:0; object-position:center bottom;">
+                </div>
+            </div>
+
+            <!-- RIGHT: Text content -->
+            <div class="flex flex-col justify-center px-12 py-16 overflow-y-auto" style="background:#ffffff; height:680px;">
+                <p class="text-xs font-bold uppercase tracking-[0.4em] mb-5" style="color:#fff; background:#ca8a04; display:inline-block; padding:5px 16px; border-radius:2px; align-self:flex-start;">Our Approach</p>
+                <h2 class="font-black uppercase tracking-tight mb-3" style="color:#1b3a2d; font-size:clamp(2rem,4vw,3.2rem); line-height:1.1;">Tailored<br>Support</h2>
+                <div style="width:48px; height:4px; background:#2BF6B5; margin-bottom:24px; border-radius:2px;"></div>
+                <p class="text-gray-600 leading-relaxed mb-10" style="font-size:15px;">No two farms are the same. We take time to understand your land, your crops, your challenges, and your goals — then build a program that fits your operation precisely, not a generic one-size-fits-all solution.</p>
+
+                <div class="flex flex-col gap-6">
+                    <div class="flex gap-4 items-start" style="padding:18px 20px; border-left:4px solid #ca8a04; background:#f0f7f0;">
+                        <div style="background:#1b3a2d; color:#2BF6B5; font-size:14px; font-weight:900; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;">01</div>
+                        <div>
+                            <h3 class="font-bold text-sm uppercase tracking-widest mb-1" style="color:#1b3a2d;">Farm-Specific Programs</h3>
+                            <p class="text-gray-500 text-sm leading-relaxed">Recommendations grounded in your soil profile, crop variety, and seasonal conditions — not blanket solutions.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start" style="padding:18px 20px; border-left:4px solid #ca8a04; background:#f0f7f0;">
+                        <div style="background:#1b3a2d; color:#2BF6B5; font-size:14px; font-weight:900; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;">02</div>
+                        <div>
+                            <h3 class="font-bold text-sm uppercase tracking-widest mb-1" style="color:#1b3a2d;">On-Call Expertise</h3>
+                            <p class="text-gray-500 text-sm leading-relaxed">Direct access to our agronomy team whenever you face a pest, disease outbreak, or need urgent dosage guidance.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start" style="padding:18px 20px; border-left:4px solid #ca8a04; background:#f0f7f0;">
+                        <div style="background:#1b3a2d; color:#2BF6B5; font-size:14px; font-weight:900; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;">03</div>
+                        <div>
+                            <h3 class="font-bold text-sm uppercase tracking-widest mb-1" style="color:#1b3a2d;">End-to-End Coverage</h3>
+                            <p class="text-gray-500 text-sm leading-relaxed">Support from seed treatment through to post-harvest protection — adapting as your fields and season evolve.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ═══ EMPOWERING FARMERS ═══ -->
+    <section id="empowering-farmers" class="border-b border-[#ca8a04]" style="overflow:hidden;">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2" style="height:680px;">
+
+            <!-- LEFT: Text content (flipped from Tailored Support) -->
+            <div class="flex flex-col justify-center px-12 py-16 overflow-y-auto" style="background:#1b3a2d; height:680px;">
+                <p class="text-xs font-bold uppercase tracking-[0.4em] mb-5" style="color:#fff; background:#ca8a04; display:inline-block; padding:5px 16px; border-radius:2px; align-self:flex-start;">Our People</p>
+                <h2 class="font-black uppercase tracking-tight mb-3 text-white" style="font-size:clamp(2rem,4vw,3.2rem); line-height:1.1;">Empowering<br>Farmers</h2>
+                <div style="width:48px; height:4px; background:#2BF6B5; margin-bottom:24px; border-radius:2px;"></div>
+                <p class="leading-relaxed mb-8" style="color:#ffffff; font-size:15px;">A great product in the wrong hands produces poor results. We invest in the knowledge and confidence of every farmer we work with — because when farmers understand what they are doing and why, the land responds.</p>
+
+                <p class="leading-relaxed mb-8" style="color:#ffffff; font-size:14px;">We engage farmers through field visits, hands-on demonstrations, and practical training that translates complex agronomy into clear, actionable steps. Our team monitors progress, interprets soil results, and adjusts recommendations in real time.</p>
+
+                <!-- Stats row -->
+                <div class="grid grid-cols-2 gap-3 mt-2">
+                    <div class="text-center" style="padding:20px 10px; background:rgba(255,255,255,0.08); border:1px solid rgba(202,138,4,0.25); border-radius:8px;">
+                        <p class="text-3xl font-black mb-1" style="color:#2BF6B5;">14+</p>
+                        <p class="text-white text-xs uppercase tracking-widest font-bold leading-snug">Crop Programs</p>
+                    </div>
+                    <div class="text-center" style="padding:20px 10px; background:rgba(255,255,255,0.08); border:1px solid rgba(202,138,4,0.25); border-radius:8px;">
+                        <p class="text-3xl font-black mb-1" style="color:#ca8a04;">100%</p>
+                        <p class="text-white text-xs uppercase tracking-widest font-bold leading-snug">Field-Tested</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Image mosaic — 2 top, 1 large bottom (mirrored from Tailored Support) -->
+            <div class="grid grid-rows-2 gap-2 p-2" style="background:#ca8a04; height:680px;">
+                <!-- Two images top row -->
+                <div class="grid grid-cols-2 gap-2" style="min-height:0;">
+                    <img src="farmers-1.jpg" class="w-full h-full object-cover" alt="Empowering Farmers" style="min-height:0;">
+                    <img src="farmers-2.jpg" class="w-full h-full object-cover" alt="Empowering Farmers" style="min-height:0;">
+                </div>
+                <!-- Large image bottom -->
+                <img src="farmers-3.jpg" class="w-full h-full object-cover" alt="Empowering Farmers" style="min-height:0;">
+            </div>
+
+        </div>
+    </section>
+
+
+    <footer id="contact" class="bg-[#1b3a2d] pt-8 pb-3 px-6 border-t border-[#1b3a2d]">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
+            <div>
+                <div class="text-2xl font-black tracking-tighter text-[#2BF6B5] uppercase mb-6">FieldForce</div>
+                <p class="text-gray-400 text-sm leading-relaxed">Delivering premium agrochemical solutions and expert advisory to maximize your farm's success.</p>
+            </div>
+            <div class="md:pl-12">
+                <h4 class="text-white font-bold uppercase tracking-widest text-xs mb-8">Navigation</h4>
+                <ul class="space-y-4 text-gray-500 text-sm">
+                    <li><a href="#about"    class="hover:text-[#2BF6B5] transition-colors">About Us</a></li>
+                    <li><a href="#services" class="hover:text-[#2BF6B5] transition-colors">Our Services</a></li>
+                    <li><span class="cursor-pointer hover:text-[#2BF6B5] transition-colors" onclick="openNav('Products','Products List')">Products</span></li>
+                    <li><span class="cursor-pointer hover:text-[#2BF6B5] transition-colors" onclick="openNav('CropGuide','Crop Guide')">Crop Guide</span></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-widest text-xs mb-8">Contact Information</h4>
+                <ul class="space-y-6 text-gray-400 text-sm">
+                    <li class="flex items-start"><span class="text-[#2BF6B5] mr-4">📍</span><span>6 Clarke Close, Belvedere, Harare, Zimbabwe</span></li>
+                    <li class="flex items-start"><span class="text-[#2BF6B5] mr-4">📞</span><span>+263 718 814 555 / +263 773 814 555 / +263 787 249 560</span></li>
+                    <li class="flex items-center"><span class="text-[#2BF6B5] mr-4">✉️</span><a href="mailto:fieldforceagroservices@gmail.com" class="hover:text-[#2BF6B5] transition-colors">fieldforceagroservices@gmail.com</a></li>
+                    <li class="flex items-center"><span class="text-[#2BF6B5] mr-4">🌐</span><a href="https://facebook.com" target="_blank" class="hover:text-white transition-colors">Facebook Profile</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto border-t border-[#1b3a2d] pt-8 text-center text-[10px] text-[#a0c080] uppercase tracking-[0.4em]">&copy; 2026 FieldForce Agro Services.</div>
+    </footer>
+
+
+    <a class="wa-float" href="https://wa.me/263718814555?text=Hello%20FieldForce%2C%20I%20would%20like%20to%20enquire%20about%20your%20services." target="_blank" rel="noopener">
+        <div class="wa-bubble">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            <span class="wa-label">Talk to us</span>
+        </div>
+    </a>
+
+    <div id="main-panel" class="panel-overlay">
+
+        <div class="panel-header">
+            <span class="text-[10px] uppercase tracking-[0.4em] font-bold" style="color:#1b3a2d;" id="panel-title">Products</span>
+            <button class="panel-close-btn" onclick="closePanel()">✕</button>
+        </div>
+
+        <div class="inner-tabs">
+            <button id="tab-btn-Products"        class="inner-tab-btn active" onclick="switchTab('Products')">Products List</button>
+            <button id="tab-btn-CropGuide"       class="inner-tab-btn"        onclick="switchTab('CropGuide')">Crop Guides</button>
+            <button id="tab-btn-Advisory"        class="inner-tab-btn"        onclick="switchTab('Advisory')">Advisory Services</button>
+            <button id="tab-btn-SoilAnalysis"    class="inner-tab-btn"        onclick="switchTab('SoilAnalysis')"    style="display:none;">Soil Parameters</button>
+            <button id="tab-btn-CropProtection"  class="inner-tab-btn"        onclick="switchTab('CropProtection')"  style="display:none;">Crop Protection</button>
+        </div>
+
+        <!-- ════════ PRODUCTS TAB ════════ -->
+        <div id="tab-Products" class="inner-tab-content active">
+            <div id="products-loading" style="padding:40px;text-align:center;color:#888;font-size:13px;letter-spacing:0.1em;">Loading products…</div>
+            <div id="products-container"></div>
+        </div>
+
+        <!-- ════════ CROP GUIDE TAB ════════ -->
+        <div id="tab-CropGuide" class="inner-tab-content">
+            <div id="cropguide-loading" style="padding:40px;text-align:center;color:#888;font-size:13px;letter-spacing:0.1em;">Loading crop guides…</div>
+            <div id="cropguide-container"></div>
+        </div>
+
+        <!-- ════════ SOIL ANALYSIS TAB ════════ -->
+        <div id="tab-SoilAnalysis" class="inner-tab-content">
+            <div id="soil-loading" style="padding:40px;text-align:center;color:#888;font-size:13px;letter-spacing:0.1em;">Loading soil parameters…</div>
+            <div id="soil-container"></div>
+        </div>
+
+        <!-- ════════ ADVISORY TAB ════════ -->
+        <div id="tab-Advisory" class="inner-tab-content">
+            <div style="max-width:760px;">
+                <h3 style="color:#ca8a04;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;font-weight:700;margin-bottom:16px;">Advisory Services</h3>
+                <div style="margin-bottom:32px;">
+                    <h4 style="color:#1b3a2d;font-size:13px;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;margin-bottom:12px;border-bottom:2px solid #1b3a2d;padding-bottom:8px;">Description</h4>
+                    <p style="color:#333;font-size:14px;line-height:1.8;margin-bottom:12px;">Our agronomy services are designed to maximize crop performance by offering expert advice, tailored programs and hands-on field visits.</p>
+                    <p style="color:#333;font-size:14px;line-height:1.8;">Whether you're managing a small farm or a large operation, we provide the tools and expertise to support you at every stage of the crop cycle.</p>
+                </div>
+                <div>
+                    <h4 style="color:#1b3a2d;font-size:13px;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;margin-bottom:6px;border-bottom:2px solid #1b3a2d;padding-bottom:8px;">Service Request Form</h4>
+                    <p style="color:#555;font-size:12px;margin-bottom:24px;">Please fill out the form below to request our agronomy services.</p>
+                    <div style="display:flex;flex-direction:column;gap:16px;" id="advisory-form">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                            <div>
+                                <label style="display:block;color:#1b3a2d;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;margin-bottom:6px;">Full Name *</label>
+                                <input id="af-name" type="text" placeholder="e.g. John Moyo" style="width:100%;background:#fff;border:2px solid #1b3a2d;color:#111;padding:10px 14px;font-size:13px;border-radius:4px;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='#2BF6B5'" onblur="this.style.borderColor='#1b3a2d'">
+                            </div>
+                            <div>
+                                <label style="display:block;color:#1b3a2d;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;margin-bottom:6px;">Phone Number *</label>
+                                <input id="af-phone" type="tel" placeholder="e.g. +263 77 000 0000" style="width:100%;background:#fff;border:2px solid #1b3a2d;color:#111;padding:10px 14px;font-size:13px;border-radius:4px;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='#2BF6B5'" onblur="this.style.borderColor='#1b3a2d'">
+                            </div>
+                        </div>
+                        <div>
+                            <label style="display:block;color:#1b3a2d;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;margin-bottom:6px;">Email Address</label>
+                            <input id="af-email" type="email" placeholder="e.g. john@example.com" style="width:100%;background:#fff;border:2px solid #1b3a2d;color:#111;padding:10px 14px;font-size:13px;border-radius:4px;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='#2BF6B5'" onblur="this.style.borderColor='#1b3a2d'">
+                        </div>
+                        <div>
+                            <label style="display:block;color:#1b3a2d;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;margin-bottom:6px;">Farm / Operation Name</label>
+                            <input id="af-farm" type="text" placeholder="e.g. Greenfield Farm" style="width:100%;background:#fff;border:2px solid #1b3a2d;color:#111;padding:10px 14px;font-size:13px;border-radius:4px;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='#2BF6B5'" onblur="this.style.borderColor='#1b3a2d'">
+                        </div>
+                        <div>
+                            <label style="display:block;color:#1b3a2d;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;margin-bottom:12px;">Advantages</label>
+                            <div style="display:flex;flex-direction:column;gap:10px;">
+                                <label style="display:flex;align-items:flex-start;gap:14px;background:#f0f7f2;border:2px solid #1b3a2d;border-radius:6px;padding:14px 18px;cursor:pointer;">
+                                    <input id="af-cb1" type="checkbox" style="accent-color:#2BF6B5;width:15px;height:15px;margin-top:2px;flex-shrink:0;">
+                                    <div>
+                                        <p style="color:#1b3a2d;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 4px;">Request Recommendations</p>
+                                        <p style="color:#4a7c59;font-size:12px;line-height:1.6;margin:0;">Get targeted product and practice recommendations tailored to your specific crop and field conditions.</p>
+                                    </div>
+                                </label>
+                                <label style="display:flex;align-items:flex-start;gap:14px;background:#f0f7f2;border:2px solid #1b3a2d;border-radius:6px;padding:14px 18px;cursor:pointer;">
+                                    <input id="af-cb2" type="checkbox" style="accent-color:#2BF6B5;width:15px;height:15px;margin-top:2px;flex-shrink:0;">
+                                    <div>
+                                        <p style="color:#1b3a2d;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 4px;">Request a Tailored Crop Program</p>
+                                        <p style="color:#4a7c59;font-size:12px;line-height:1.6;margin:0;">Receive a full-season crop program built around your operation, soil profile, and target yields.</p>
+                                    </div>
+                                </label>
+                                <label style="display:flex;align-items:flex-start;gap:14px;background:#f0f7f2;border:2px solid #1b3a2d;border-radius:6px;padding:14px 18px;cursor:pointer;">
+                                    <input id="af-cb3" type="checkbox" style="accent-color:#2BF6B5;width:15px;height:15px;margin-top:2px;flex-shrink:0;">
+                                    <div>
+                                        <p style="color:#1b3a2d;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 4px;">Request a Field Visit</p>
+                                        <p style="color:#4a7c59;font-size:12px;line-height:1.6;margin:0;">One of our agronomists will visit your farm directly to assess conditions and provide hands-on guidance.</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label style="display:block;color:#1b3a2d;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;margin-bottom:6px;">Crop(s) / Area of Focus</label>
+                            <input id="af-crops" type="text" placeholder="e.g. Maize, Tobacco — 50 ha" style="width:100%;background:#fff;border:2px solid #1b3a2d;color:#111;padding:10px 14px;font-size:13px;border-radius:4px;outline:none;box-sizing:border-box;" onfocus="this.style.borderColor='#2BF6B5'" onblur="this.style.borderColor='#1b3a2d'">
+                        </div>
+                        <div>
+                            <label style="display:block;color:#1b3a2d;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;margin-bottom:6px;">Additional Notes / Questions</label>
+                            <textarea id="af-notes" rows="4" placeholder="Describe your situation or any specific concerns..." style="width:100%;background:#fff;border:2px solid #1b3a2d;color:#111;padding:10px 14px;font-size:13px;border-radius:4px;outline:none;resize:vertical;box-sizing:border-box;" onfocus="this.style.borderColor='#2BF6B5'" onblur="this.style.borderColor='#1b3a2d'"></textarea>
+                        </div>
+                        <div>
+                            <button onclick="submitAdvisoryForm()" id="submit-btn" style="background:#ca8a04;color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;padding:14px 36px;border:none;border-radius:4px;cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Submit Request</button>
+                        </div>
+                        <div id="form-success" style="display:none;background:#f0f7f0;border:2px solid #1b3a2d;border-radius:6px;padding:16px 20px;color:#1b3a2d;font-size:13px;font-weight:600;">
+                            &#10003; &nbsp;Your request has been submitted. Our team will be in touch with you shortly.
+                        </div>
+                        <div id="form-error" style="display:none;background:#fff0f0;border:2px solid #f66;border-radius:6px;padding:16px 20px;color:#c33;font-size:13px;font-weight:600;">
+                            &#9888; &nbsp;Something went wrong. Please call us directly on +263 718 814 555.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /tab-Advisory -->
+
+        <!-- ════════ CROP PROTECTION TAB ════════ -->
+        <div id="tab-CropProtection" class="inner-tab-content">
+            <div style="margin-bottom:32px;border-bottom:1px solid #c5e0cc;padding-bottom:20px;">
+                <h3 style="color:#1b3a2d;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;font-weight:700;margin-bottom:8px;">Crop Protection &amp; Management</h3>
+                <p style="color:#333;font-size:13px;line-height:1.7;">Proactive management strategies, production guidelines and chemical reference for safeguarding your crops throughout the entire growing cycle.</p>
+            </div>
+            <h4 style="color:#1b3a2d;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;font-weight:700;margin-bottom:16px;border-left:4px solid #ca8a04;padding-left:12px;">Crop Production Guidelines</h4>
+            <div id="cropprotection-guides-container"><div style="padding:20px;text-align:center;color:#888;">Loading…</div></div>
+            <h4 style="color:#1b3a2d;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;font-weight:700;margin:40px 0 16px;border-left:4px solid #ca8a04;padding-left:12px;">Chemical &amp; Product Reference</h4>
+            <div id="cropprotection-products-container"><div style="padding:20px;text-align:center;color:#888;">Loading…</div></div>
+        </div>
+
+    </div><!-- /main-panel -->
+
+        <script>
+        /* ── Slider ── */
+        const slider = document.getElementById('slider');
+        const totalSlides = slider.children.length;
+        slider.appendChild(slider.children[0].cloneNode(true));
+        let idx = 0;
+        setInterval(() => {
+            idx++;
+            slider.style.transition = "transform 0.7s ease-in-out";
+            slider.style.transform = `translateX(-${idx * 100}%)`;
+            if (idx === totalSlides) {
+                setTimeout(() => {
+                    slider.style.transition = "none";
+                    slider.style.transform = "translateX(0)";
+                    idx = 0;
+                }, 750);
+            }
+        }, 4000);
+
+        /* ── Panel open/close ── */
+        function openPanel(label) {
+            document.getElementById('main-panel').classList.add('open');
+            document.getElementById('panel-title').textContent = label;
+            document.body.style.overflow = 'hidden';
+        }
+        function closePanel() {
+            document.getElementById('main-panel').classList.remove('open');
+            document.body.style.overflow = '';
+            document.querySelectorAll('.service-card').forEach(c => c.classList.remove('active'));
+            document.getElementById('tab-btn-CropProtection').style.display = 'none';
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+
+        /* ── Tab switch ── */
+        function switchTab(name) {
+            document.querySelectorAll('.inner-tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.inner-tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + name).classList.add('active');
+            document.getElementById('tab-btn-' + name).classList.add('active');
+        }
+
+        /* ════════════════════════════════════════════════════════
+           DATA RENDERING — reads from FieldForce_Data.js
+           Edit that file to update products and crop guides.
+        ════════════════════════════════════════════════════════ */
+
+        function buildTable(headers, rows) {
+            const th = headers.map(h => `<th>${h}</th>`).join('');
+            const tb = rows.map(r =>
+                '<tr>' + r.map(c => `<td>${String(c).replace(/\n/g,'<br>')}</td>`).join('') + '</tr>'
+            ).join('');
+            return `<table class="ff-table"><thead><tr>${th}</tr></thead><tbody>${tb}</tbody></table>`;
+        }
+
+        function buildGuideAccordion(g) {
+            let inner = '';
+            if (g.overview && g.overview.length) {
+                inner += '<div class="ff-guide-text"><ul>';
+                g.overview.forEach(o => { inner += `<li><strong>${o.label}:</strong> ${o.text}</li>`; });
+                inner += '</ul></div>';
+            }
+            (g.sections || []).forEach(s => {
+                inner += `<h4 class="ff-section-title">${s.title}</h4>`;
+                inner += buildTable(s.headers, s.rows);
+                if (s.note) inner += `<p class="ff-note">${s.note}</p>`;
+            });
+            inner += '<span class="ff-note-green">NB: ALWAYS READ LABELS BEFORE USING PRODUCTS</span>';
+            return `<details class="ff-accordion" data-guide="${g.id}"><summary>${g.name}</summary><div class="ff-accordion-content">${inner}</div></details>`;
+        }
+
+        function buildProductAccordion(cat) {
+            const cols = cat.columns || 1, items = cat.items || [];
+            let rows = '';
+            for (let i = 0; i < items.length; i += cols)
+                rows += '<tr>' + Array.from({length:cols},(_,c) => `<td>${items[i+c]||''}</td>`).join('') + '</tr>';
+            const hdr = Array.from({length:cols},()=>'Product').join('</th><th>');
+            return `<details class="ff-accordion" data-cat="${cat.id}"><summary>${cat.name}</summary><div class="ff-accordion-content"><table class="ff-table"><thead><tr><th>${hdr}</th></tr></thead><tbody>${rows}</tbody></table></div></details>`;
+        }
+
+        function renderAll() {
+            /* Products */
+            document.getElementById('products-container').innerHTML = FF_PRODUCTS.map(buildProductAccordion).join('');
+            /* Crop Guides */
+            const guidesHtml = FF_CROP_GUIDES.map(buildGuideAccordion).join('');
+            document.getElementById('cropguide-container').innerHTML = guidesHtml;
+            /* Crop Protection combined tab */
+            const cpg = document.getElementById('cropprotection-guides-container');
+            if (cpg) cpg.innerHTML = guidesHtml;
+            const cpCats = ['fungicides','herbicides','insecticides','fertilisers','plant-growth-regulators','pheromones'];
+            const cpp = document.getElementById('cropprotection-products-container');
+            if (cpp) cpp.innerHTML = FF_PRODUCTS.filter(c=>cpCats.includes(c.id)).map(buildProductAccordion).join('');
+            /* Soil Parameters */
+            const soilRows = FF_SOIL_PARAMETERS.map(p=>`<tr><td style="color:#1b3a2d;font-weight:600;">${p.name}</td><td>${p.explanation}</td></tr>`).join('');
+            document.getElementById('soil-container').innerHTML =
+                `<div style="margin-bottom:24px;"><h3 style="color:#1b3a2d;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;font-weight:700;margin-bottom:8px;">Soil Testing & Analysis — Parameter Reference</h3><p style="color:#333;font-size:13px;line-height:1.7;">Understanding your soil parameters helps determine the right amendments and fertilizers for optimal crop performance.</p></div>
+                <table class="soil-table"><thead><tr><th style="width:240px;">Parameter</th><th>Explanation</th></tr></thead><tbody>${soilRows}</tbody></table>`;
+
+            /* Hide all "Loading…" placeholders now that content is rendered */
+            ['products-loading','cropguide-loading','soil-loading'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+        }
+
+        function filterProducts(cats) {
+            document.querySelectorAll('#products-container .ff-accordion').forEach(acc => {
+                acc.style.display = (cats === null || cats.includes(acc.dataset.cat)) ? '' : 'none';
+            });
+        }
+
+        function openNav(tab, label) {
+            filterProducts(null);
+            document.getElementById('tab-btn-SoilAnalysis').style.display = 'none';
+            document.getElementById('tab-btn-CropProtection').style.display = 'none';
+            openPanel(label); switchTab(tab);
+        }
+
+        function setActive(card) {
+            document.querySelectorAll('.service-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+        }
+
+        function openService(card, type) {
+            setActive(card);
+            document.getElementById('tab-btn-SoilAnalysis').style.display = 'none';
+            document.getElementById('tab-btn-CropProtection').style.display = 'none';
+            if (type === 'agrochemicals') {
+                filterProducts(['fungicides','herbicides','insecticides','pesticides','plant-growth-regulators']);
+                openPanel('Agrochemical Products'); switchTab('Products');
+            } else if (type === 'crop-protection') {
+                document.getElementById('tab-btn-CropProtection').style.display = '';
+                openPanel('Crop Protection & Management'); switchTab('CropProtection');
+            } else if (type === 'fertilizer') {
+                filterProducts(['fertilisers']); openPanel('Fertilizer Reference'); switchTab('Products');
+            } else if (type === 'soil') {
+                filterProducts(null);
+                document.getElementById('tab-btn-SoilAnalysis').style.display = '';
+                openPanel('Soil Testing & Analysis'); switchTab('SoilAnalysis');
+            } else if (type === 'advisory') {
+                filterProducts(null); openPanel('Advisory Services'); switchTab('Advisory');
+                document.getElementById('form-success').style.display = 'none';
+                document.getElementById('form-error').style.display = 'none';
+            }
+        }
+
+        function submitAdvisoryForm() {
+            const name=document.getElementById('af-name').value.trim(),
+                  phone=document.getElementById('af-phone').value.trim(),
+                  email=document.getElementById('af-email').value.trim(),
+                  farm=document.getElementById('af-farm').value.trim(),
+                  crops=document.getElementById('af-crops').value.trim(),
+                  notes=document.getElementById('af-notes').value.trim();
+            const services=[];
+            if(document.getElementById('af-cb1').checked) services.push('Request Recommendations');
+            if(document.getElementById('af-cb2').checked) services.push('Request a Tailored Crop Program');
+            if(document.getElementById('af-cb3').checked) services.push('Request a Field Visit');
+            if(!name||!phone){alert('Please fill in at least your Full Name and Phone Number.');return;}
+            const subject='FieldForce Advisory Request — '+name;
+            const body='FIELDFORCE ADVISORY SERVICE REQUEST\n====================================\n\n'
+                +'Full Name:         '+name+'\n'
+                +'Phone Number:      '+phone+'\n'
+                +'Email Address:     '+(email||'Not provided')+'\n'
+                +'Farm / Operation:  '+(farm||'Not provided')+'\n\n'
+                +'Services Requested:\n'+(services.length?services.map(s=>'  - '+s).join('\n'):'  None selected')+'\n\n'
+                +'Crops / Area of Focus:\n  '+(crops||'Not provided')+'\n\n'
+                +'Additional Notes:\n  '+(notes||'None')+'\n\n'
+                +'====================================\nSent from the FieldForce website.';
+            window.location.href='mailto:fieldforceagroservices@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+            document.getElementById('form-success').style.display='block';
+        }
+
+        renderAll();
+
+        /* ── Nav: transparent over hero, solid green after scrolling ── */
+        (function() {
+            const nav = document.getElementById('main-nav');
+            function updateNav() {
+                if (window.scrollY > window.innerHeight - 100) {
+                    nav.style.background = '#1b3a2d';
+                    nav.style.borderBottom = '1px solid #2d5040';
+                    nav.style.boxShadow = '0 2px 12px rgba(0,0,0,0.25)';
+                } else {
+                    nav.style.background = 'transparent';
+                    nav.style.borderBottom = 'none';
+                    nav.style.boxShadow = 'none';
+                }
+            }
+            window.addEventListener('scroll', updateNav, { passive: true });
+            updateNav();
+        })();
+    </script>
+
+</body>
+</html>
