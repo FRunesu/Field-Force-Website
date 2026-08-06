@@ -72,6 +72,24 @@
         .soil-table tr:hover td { background: #1b3a2d; color: #fff; }
         .soil-table tr:hover td:first-child { color: #1b3a2d; }
 
+        /* ── Gallery ── */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+        .gallery-item { position: relative; overflow: hidden; border-radius: 6px; cursor: pointer; height: 260px; border: 1px solid #c8e0c0; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+        .gallery-item:hover img { transform: scale(1.06); }
+        .gallery-item .gallery-caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 24px 14px 10px; background: linear-gradient(to top, rgba(13,32,24,0.85), transparent); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0; transition: opacity 0.3s; }
+        .gallery-item:hover .gallery-caption { opacity: 1; }
+        .lightbox { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(13,32,24,0.94); align-items: center; justify-content: center; flex-direction: column; padding: 24px; }
+        .lightbox.open { display: flex; }
+        .lightbox img { max-width: 92vw; max-height: 82vh; object-fit: contain; border-radius: 4px; box-shadow: 0 8px 40px rgba(0,0,0,0.6); }
+        .lightbox-caption { color: #2BF6B5; font-size: 11px; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; margin-top: 16px; text-align: center; }
+        .lightbox-close { position: absolute; top: 20px; right: 28px; background: none; border: 1px solid #2BF6B5; color: #2BF6B5; font-size: 22px; line-height: 1; cursor: pointer; padding: 6px 14px; border-radius: 4px; }
+        .lightbox-close:hover { background: #2BF6B5; color: #0d2018; }
+        .lightbox-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.08); border: 1px solid #2BF6B5; color: #2BF6B5; font-size: 26px; line-height: 1; cursor: pointer; padding: 10px 16px; border-radius: 4px; user-select: none; }
+        .lightbox-arrow:hover { background: #2BF6B5; color: #0d2018; }
+        .lightbox-prev { left: 24px; }
+        .lightbox-next { right: 24px; }
+
         /* ── WhatsApp floating button ── */
         .wa-float { position: fixed; bottom: 28px; right: 28px; z-index: 9999; display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; }
         .wa-bubble { background: #25D366; border-radius: 50px; display: flex; align-items: center; gap: 10px; padding: 12px 20px 12px 14px; box-shadow: 0 4px 20px rgba(37,211,102,0.5); position: relative; }
@@ -99,6 +117,7 @@
             <a href="#services"          class="hover:text-[#2BF6B5] transition-colors">Services</a>
             <a href="#tailored-support"  class="hover:text-[#2BF6B5] transition-colors">Tailored Support</a>
             <a href="#empowering-farmers"class="hover:text-[#2BF6B5] transition-colors">Empowering Farmers</a>
+            <a href="#gallery"           class="hover:text-[#2BF6B5] transition-colors">Gallery</a>
             <span class="cursor-pointer hover:text-[#2BF6B5] transition-colors" onclick="openNav('Products','Products List')">Products</span>
             <span class="cursor-pointer hover:text-[#2BF6B5] transition-colors" onclick="openNav('CropGuide','Crop Guide')">Crop Guide</span>
             <a href="#contact"           class="hover:text-[#2BF6B5] transition-colors">Contact</a>
@@ -283,6 +302,44 @@
     </section>
 
 
+    <!-- ═══ GALLERY ═══ -->
+    <section id="gallery" class="py-24 px-6 bg-[#f0f7f0] border-y border-[#c8e0c0]">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tight mb-3 text-center" style="color:#1b3a2d;">Gallery</h2>
+            <p class="text-center text-gray-500 text-[10px] tracking-widest uppercase mb-16">FieldForce in the field — click any photo to enlarge</p>
+            <div class="gallery-grid" id="gallery-grid">
+                <div class="gallery-item"><img src="gallery-greenhouse-1.jpg" alt="Greenhouse rose inspection" loading="lazy"><div class="gallery-caption">Greenhouse Rose Inspection</div></div>
+                <div class="gallery-item"><img src="gallery-greenhouse-2.jpg" alt="Greenhouse crop scouting" loading="lazy"><div class="gallery-caption">Greenhouse Crop Scouting</div></div>
+                <div class="gallery-item"><img src="expert-consultation.jpg" alt="Expert consultation" loading="lazy"><div class="gallery-caption">Expert Consultation</div></div>
+                <div class="gallery-item"><img src="black-farmer.jpg" alt="Empowering farmers" loading="lazy"><div class="gallery-caption">Empowering Farmers</div></div>
+                <div class="gallery-item"><img src="premium-brands.jpg" alt="Premium brands support" loading="lazy"><div class="gallery-caption">Premium Brands Support</div></div>
+                <div class="gallery-item"><img src="tailored-support.jpg" alt="Tailored support" loading="lazy"><div class="gallery-caption">Tailored Support</div></div>
+                <div class="gallery-item"><img src="sustainable-solutions.jpg" alt="Sustainable solutions" loading="lazy"><div class="gallery-caption">Sustainable Solutions</div></div>
+                <div class="gallery-item"><img src="agro-chemicals.jpg" alt="Field specialists" loading="lazy"><div class="gallery-caption">Field Specialists</div></div>
+                <div class="gallery-item"><img src="agro-supply.jpg" alt="Agrochemicals supply" loading="lazy"><div class="gallery-caption">Agrochemicals Supply</div></div>
+                <div class="gallery-item"><img src="crop-protection.jpg" alt="Crop protection" loading="lazy"><div class="gallery-caption">Crop Protection</div></div>
+                <div class="gallery-item"><img src="soil-testing.jpg" alt="Soil testing" loading="lazy"><div class="gallery-caption">Soil Testing</div></div>
+                <div class="gallery-item"><img src="fertilizer.jpg" alt="Fertilizer recommendations" loading="lazy"><div class="gallery-caption">Fertilizer Recommendations</div></div>
+                <div class="gallery-item"><img src="advisory.jpg" alt="Advisory services" loading="lazy"><div class="gallery-caption">Advisory Services</div></div>
+                <div class="gallery-item"><img src="tailored-1.jpg" alt="Tailored support in the field" loading="lazy"><div class="gallery-caption">Tailored Support in the Field</div></div>
+                <div class="gallery-item"><img src="tailored-2.jpg" alt="On-farm guidance" loading="lazy"><div class="gallery-caption">On-Farm Guidance</div></div>
+                <div class="gallery-item"><img src="tailored-3.jpg" alt="Crop programs" loading="lazy"><div class="gallery-caption">Crop Programs</div></div>
+                <div class="gallery-item"><img src="farmers-1.jpg" alt="Working with farmers" loading="lazy"><div class="gallery-caption">Working with Farmers</div></div>
+                <div class="gallery-item"><img src="farmers-2.jpg" alt="Field training" loading="lazy"><div class="gallery-caption">Field Training</div></div>
+                <div class="gallery-item"><img src="farmers-3.jpg" alt="Community engagement" loading="lazy"><div class="gallery-caption">Community Engagement</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ LIGHTBOX ═══ -->
+    <div id="lightbox" class="lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+        <button class="lightbox-arrow lightbox-prev" onclick="stepLightbox(-1)">‹</button>
+        <img id="lightbox-img" src="" alt="">
+        <button class="lightbox-arrow lightbox-next" onclick="stepLightbox(1)">›</button>
+        <p id="lightbox-caption" class="lightbox-caption"></p>
+    </div>
+
     <footer id="contact" class="bg-[#1b3a2d] pt-8 pb-3 px-6 border-t border-[#1b3a2d]">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
             <div>
@@ -294,6 +351,7 @@
                 <ul class="space-y-4 text-gray-500 text-sm">
                     <li><a href="#about"    class="hover:text-[#2BF6B5] transition-colors">About Us</a></li>
                     <li><a href="#services" class="hover:text-[#2BF6B5] transition-colors">Our Services</a></li>
+                    <li><a href="#gallery"  class="hover:text-[#2BF6B5] transition-colors">Gallery</a></li>
                     <li><span class="cursor-pointer hover:text-[#2BF6B5] transition-colors" onclick="openNav('Products','Products List')">Products</span></li>
                     <li><span class="cursor-pointer hover:text-[#2BF6B5] transition-colors" onclick="openNav('CropGuide','Crop Guide')">Crop Guide</span></li>
                 </ul>
@@ -619,6 +677,33 @@
         }
 
         renderAll();
+
+        /* ── Gallery lightbox ── */
+        const galleryItems = Array.from(document.querySelectorAll('#gallery-grid .gallery-item'));
+        let lightboxIdx = 0;
+        function showLightbox(i) {
+            lightboxIdx = (i + galleryItems.length) % galleryItems.length;
+            const img = galleryItems[lightboxIdx].querySelector('img');
+            const cap = galleryItems[lightboxIdx].querySelector('.gallery-caption');
+            document.getElementById('lightbox-img').src = img.src;
+            document.getElementById('lightbox-img').alt = img.alt;
+            document.getElementById('lightbox-caption').textContent = cap ? cap.textContent : '';
+            document.getElementById('lightbox').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        function stepLightbox(d) { showLightbox(lightboxIdx + d); }
+        galleryItems.forEach((item, i) => item.addEventListener('click', () => showLightbox(i)));
+        document.getElementById('lightbox').addEventListener('click', e => { if (e.target.id === 'lightbox') closeLightbox(); });
+        document.addEventListener('keydown', e => {
+            if (!document.getElementById('lightbox').classList.contains('open')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') stepLightbox(-1);
+            if (e.key === 'ArrowRight') stepLightbox(1);
+        });
 
         /* ── Nav: transparent over hero, solid green after scrolling ── */
         (function() {
